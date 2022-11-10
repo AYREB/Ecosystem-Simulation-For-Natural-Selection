@@ -5,6 +5,8 @@ public enum SpeciesEnum
     //Primary
     Rabbit,
     //Secondary
-    Fox
+    Fox,
+    //Tertiary
+    Bear
 }
 

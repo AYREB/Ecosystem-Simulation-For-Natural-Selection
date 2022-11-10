@@ -29,11 +29,6 @@ public class ProducerNextTry : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            BeenEaten(this.gameObject);
-        }
-
         if (foodCurrentlyExists && foodFullyGrown)
         {
             foodReadyToBeEaten = true;
@@ -59,8 +54,24 @@ public class ProducerNextTry : MonoBehaviour
         Destroy(currentFoodGrown);
         foodCurrentlyExists = false;
         StartCoroutine(PlantSpawnCooldown());
-        objectEatenBy.GetComponent<Consumer>().allObjectsInRange.Remove(this.gameObject);
-        objectEatenBy.GetComponent<Consumer>().allPreyInRange.Remove(this.gameObject);
+        //objectEatenBy.GetComponent<Consumer>().allObjectsInRange.Remove(this.gameObject);
+        //objectEatenBy.GetComponent<Consumer>().allPreyInRange.Remove(this.gameObject);
+
+        foreach (Consumer consumers in FindObjectsOfType<Consumer>())
+        {
+            if (consumers.allObjectsInRange.Contains(this.gameObject))
+            {
+                consumers.allObjectsInRange.Remove(this.gameObject);
+                consumers.allPredatorsInRange.Remove(this.gameObject);
+                consumers.allPreyInRange.Remove(this.gameObject);
+
+                if (consumers.objectInterestedIn == this.gameObject)
+                {
+                    consumers.objectInterestedIn = null;
+                    consumers.interested = false;
+                }
+            }
+        }
     }
 
 

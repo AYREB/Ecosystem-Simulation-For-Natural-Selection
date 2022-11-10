@@ -31,7 +31,7 @@ public class Consumer : MonoBehaviour
     public float weight;
     public float foodConsumptionSpeed;
     public float stamina;
-    public float fightOrFlightStrength0Flight2Fight;
+    public float fightOrFlightStrength10Flight0Fight;
 
     [Header("Requirements")]
     public float maxFoodLevel;
@@ -46,7 +46,6 @@ public class Consumer : MonoBehaviour
     public bool anyPredatorInRange;
     public bool anyPrey_producerInRange;
     public List<GameObject> allObjectsInRange;
-    public GameObject closestGameobjectInViewRange;
     public List<GameObject> allPredatorsInRange;
     public List<GameObject> allPreyInRange;
     public GameObject closestPredator;
@@ -58,7 +57,6 @@ public class Consumer : MonoBehaviour
     public Vector3 positionMovingTo;
     public GameObject objectInterestedIn;
     public bool runningAway;
-    public bool hitObjectTryingToEat;
 
     // Start is called before the first frame update
     void Start()
@@ -86,10 +84,17 @@ public class Consumer : MonoBehaviour
         {
             AllPredatorsInRangeList();
         }
-        Movement();
-        Interest();
-        NavMeshMoveTo(positionMovingTo);        
+        ClosestPredatorAndPrey();
+        Interest();       
+        Movement();        
+        NavMeshMoveTo(new Vector3(positionMovingTo.x, positionMovingTo.y + allSpeciesRequirement.SpawnOffset, positionMovingTo.z));
+        if (objectInterestedIn == null)
+        {
+            interested = false;
+        }
     }
+
+   
 
     public void Movement()
     {
@@ -156,7 +161,7 @@ public class Consumer : MonoBehaviour
     public bool AnyPredatorsInRange()
     {
         bool anyPredators = false;
-        foreach (GameObject item in allObjectsInRange)
+        foreach (GameObject item in allPredatorsInRange)
         {
             //Check if predator
             if (item.GetComponent<AllSpeciesReuirement>() != null)
@@ -177,7 +182,7 @@ public class Consumer : MonoBehaviour
     {
         bool anyPrey = false;
 
-        foreach (GameObject item in allObjectsInRange)
+        foreach (GameObject item in allPreyInRange)
         {
             if (item.GetComponent<AllSpeciesReuirement>() != null)
             {
@@ -207,27 +212,49 @@ public class Consumer : MonoBehaviour
         positionMovingTo = returnVal;
     }
 
-    public void Interest()
+    public void ClosestPredatorAndPrey()
     {
-        closestGameobjectInViewRange = closestGameobjectInAList(allObjectsInRange);
-
+        closestPredator = null;
+        closestPrey = null;
         anyPredatorInRange = AnyPredatorsInRange();
         anyPrey_producerInRange = AnyPreyInRange();
-        
-        //Get info on nearest prey
-        if (anyPrey_producerInRange == true)
-        {
-            closestPrey = closestGameobjectInAList(allPreyInRange);
-            distanceToNearestPrey_Consumable = Vector3.Distance(closestPrey.transform.position, this.transform.position);
-        }
-        
         //Get info on nearest predator
-        if (anyPredatorInRange == true)
-        {
+        if (allPredatorsInRange.Count > 1)
+        {            
             closestPredator = closestGameobjectInAList(allPredatorsInRange);
             distanceToNearestPred = Vector3.Distance(closestPredator.transform.position, this.transform.position);
+            interested = true;
+        }
+        else if (allPredatorsInRange.Count == 1)
+        {            
+            closestPredator = allPredatorsInRange[0];
+            interested = true;
+        }
+        else if (allPredatorsInRange.Count == 0)
+        {
+            closestPredator = null;
         }
 
+        //Get info on nearest prey
+        if (allPreyInRange.Count > 1)
+        {           
+            closestPrey = closestGameobjectInAList(allPreyInRange);
+            distanceToNearestPrey_Consumable = Vector3.Distance(closestPrey.transform.position, this.transform.position);
+            interested = true;
+        }
+        else if (allPreyInRange.Count == 1)
+        {           
+            closestPrey = allPreyInRange[0];
+            interested = true;
+        }
+        else if (allPreyInRange.Count == 0)
+        {
+            closestPrey = null;
+        }
+    }
+
+    public void Interest()
+    {
         //What is it interested in
 
         //both in range
@@ -235,14 +262,13 @@ public class Consumer : MonoBehaviour
         {
             interested = true;
 
-            if (distanceToNearestPred > distanceToNearestPrey_Consumable * fightOrFlightStrength0Flight2Fight)
+            if (distanceToNearestPred < distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
             {
                 objectInterestedIn = closestPredator;
-                //FIX THIS
                 runningAway = true;
                 getRunawayPosition(closestPredator.transform.position);
             }
-            else if (distanceToNearestPrey_Consumable * fightOrFlightStrength0Flight2Fight > distanceToNearestPred)
+            else if (distanceToNearestPred > distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
             {
                 runningAway = false;
                 objectInterestedIn = closestPrey;
@@ -361,6 +387,8 @@ public class Consumer : MonoBehaviour
             if (allObjectsInRange.Contains(other.gameObject) == false)
             {
                 allObjectsInRange.Add(other.gameObject);
+                AllPredatorsInRangeList();
+                AllPreyInRangeList();
             }
         }
         else if (option == 2)
@@ -422,56 +450,4 @@ public class Consumer : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{        
-    //    if (allObjectsInRange.Contains(other.gameObject) == false)
-    //    {
-    //         allObjectsInRange.Add(other.gameObject);
-    //    }
-    //}
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (allObjectsInRange.Contains(other.gameObject) == false)
-    //    {
-    //        if (other.gameObject.tag == "Producer")
-    //        {
-    //            foreach (SpeciesEnum myDiet in GetComponent<AllSpeciesReuirement>().diet)
-    //            {
-    //                if (myDiet == other.GetComponent<AllSpeciesReuirement>().species)
-    //                {
-    //                    if (other.GetComponent<ProducerNextTry>().foodReadyToBeEaten == true)
-    //                    {
-    //                        if (allObjectsInRange.Contains(other.gameObject) == false)
-    //                        {
-    //                            allObjectsInRange.Add(other.gameObject);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }  
-    //        else if (other.gameObject.tag != "Producer")
-    //        {
-    //            if (allObjectsInRange.Contains(other.gameObject) == false)
-    //            {
-    //                allObjectsInRange.Add(other.gameObject);
-    //            }
-    //        }
-    //    }
-    //}
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (allObjectsInRange.Contains(other.gameObject) == true)
-    //    {
-    //        allObjectsInRange.Remove(other.gameObject);
-    //    }
-    //    if (allPredatorsInRange.Contains(other.gameObject) == true)
-    //    {
-    //        allPredatorsInRange.Remove(other.gameObject);
-    //    }
-    //    if (allPreyInRange.Contains(other.gameObject) == true)
-    //    {
-    //        allPreyInRange.Remove(other.gameObject);
-    //    }
-    //}
 }

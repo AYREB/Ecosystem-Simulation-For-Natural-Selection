@@ -196,7 +196,7 @@ MonoBehaviour:
   weight: 0
   foodConsumptionSpeed: 0
   stamina: 0
-  fightOrFlightStrength0Flight2Fight: 0
+  fightOrFlightStrength10Flight0Fight: 10
   maxFoodLevel: 0
   maxWaterLevel: 0
   maxReproductiveUrge: 0
@@ -207,7 +207,6 @@ MonoBehaviour:
   anyPredatorInRange: 0
   anyPrey_producerInRange: 0
   allObjectsInRange: []
-  closestGameobjectInViewRange: {fileID: 0}
   allPredatorsInRange: []
   allPreyInRange: []
   closestPredator: {fileID: 0}
@@ -219,7 +218,6 @@ MonoBehaviour:
   positionMovingTo: {x: 0, y: 0, z: 0}
   objectInterestedIn: {fileID: 0}
   runningAway: 0
-  hitObjectTryingToEat: 0
 --- !u!195 &5627311383270748372
 NavMeshAgent:
   m_ObjectHideFlags: 0

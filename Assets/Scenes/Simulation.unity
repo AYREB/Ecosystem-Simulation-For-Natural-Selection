@@ -944,10 +944,13 @@ MonoBehaviour:
     startingCount: 8
   - name: Mushroom
     prefab: {fileID: 7658331334883041361, guid: 236d0589a2164aa49aaecaa4f57f7faa, type: 3}
-    startingCount: 5
+    startingCount: 8
   - name: Fox
     prefab: {fileID: 8957629482427661547, guid: 24264a117c483a8439c91725b0248174, type: 3}
     startingCount: 2
+  - name: Bear
+    prefab: {fileID: 3266810157810920456, guid: 2b1ac95d929e3f24e89a83d6cf5a25f3, type: 3}
+    startingCount: 0
 --- !u!1 &95592243
 GameObject:
   m_ObjectHideFlags: 0
