@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 2234304293748531255}
   - component: {fileID: 5843963717452001221}
   - component: {fileID: 5843963717275773496}
+  - component: {fileID: 2588725636396266675}
   m_Layer: 6
   m_Name: Bear
   m_TagString: Consumer
@@ -185,14 +186,14 @@ MonoBehaviour:
   height: 0
   strength: 0
   width_length: 0
-  visionRadius: 10
+  visionRadius: 4
   gestationDuration: 0
   greed: 0
   foodCapacity: 0
   maxOffspring: 0
   reproductiveUrgeIncreaseSpeed: 0
   attractiveness: 0
-  speed: 2
+  speed: 3
   weight: 0
   foodConsumptionSpeed: 0
   stamina: 0
@@ -270,3 +271,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!208 &2588725636396266675
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266810157810920456}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

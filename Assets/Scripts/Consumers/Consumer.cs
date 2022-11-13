@@ -17,6 +17,7 @@ public class Consumer : MonoBehaviour
     public Color colourOfObject;
 
     [Header("Genes")]
+    public bool isMale;
     public float height;
     public float strength;
     public float width_length;
@@ -29,9 +30,8 @@ public class Consumer : MonoBehaviour
     public float attractiveness;
     public float speed;
     public float weight;
-    public float foodConsumptionSpeed;
     public float stamina;
-    public float fightOrFlightStrength10Flight0Fight;
+    public float fightOrFlightStrength10Flight0Fight;    
 
     [Header("Requirements")]
     public float maxFoodLevel;
@@ -48,6 +48,8 @@ public class Consumer : MonoBehaviour
     public List<GameObject> allObjectsInRange;
     public List<GameObject> allPredatorsInRange;
     public List<GameObject> allPreyInRange;
+    public List<GameObject> allSameGenderInRange;
+    public List<GameObject> allDifferentGenderInRange;
     public GameObject closestPredator;
     public GameObject closestPrey;
     public float distanceToNearestPred;
@@ -91,6 +93,14 @@ public class Consumer : MonoBehaviour
         if (objectInterestedIn == null)
         {
             interested = false;
+        }
+    }
+
+    public void Reproduction()
+    {
+        if (reproductiveUrge > foodLevel && reproductiveUrge > waterLevel)
+        {
+            Debug.Log("Hi");
         }
     }
 
@@ -228,6 +238,7 @@ public class Consumer : MonoBehaviour
         else if (allPredatorsInRange.Count == 1)
         {            
             closestPredator = allPredatorsInRange[0];
+            distanceToNearestPred = Vector3.Distance(closestPredator.transform.position, this.transform.position);
             interested = true;
         }
         else if (allPredatorsInRange.Count == 0)
@@ -245,6 +256,7 @@ public class Consumer : MonoBehaviour
         else if (allPreyInRange.Count == 1)
         {           
             closestPrey = allPreyInRange[0];
+            distanceToNearestPrey_Consumable = Vector3.Distance(closestPrey.transform.position, this.transform.position);
             interested = true;
         }
         else if (allPreyInRange.Count == 0)
@@ -375,6 +387,24 @@ public class Consumer : MonoBehaviour
                             allPredatorsInRange.Add(item);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private void SameSpeciesInRangeList()
+    {
+        foreach (GameObject item in allObjectsInRange)
+        {
+            if (item.GetComponent<Consumer>() != null)
+            {
+                if (item.GetComponent<Consumer>().isMale == isMale)
+                {
+                    allSameGenderInRange.Add(item);
+                }
+                else if (item.GetComponent<Consumer>().isMale != isMale)
+                {
+                    allDifferentGenderInRange.Add(item);
                 }
             }
         }

@@ -196,7 +196,7 @@ MonoBehaviour:
   weight: 0
   foodConsumptionSpeed: 0
   stamina: 0
-  fightOrFlightStrength10Flight0Fight: 10
+  fightOrFlightStrength10Flight0Fight: 2
   maxFoodLevel: 0
   maxWaterLevel: 0
   maxReproductiveUrge: 0

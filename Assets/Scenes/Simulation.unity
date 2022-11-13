@@ -950,7 +950,7 @@ MonoBehaviour:
     startingCount: 2
   - name: Bear
     prefab: {fileID: 3266810157810920456, guid: 2b1ac95d929e3f24e89a83d6cf5a25f3, type: 3}
-    startingCount: 0
+    startingCount: 1
 --- !u!1 &95592243
 GameObject:
   m_ObjectHideFlags: 0
