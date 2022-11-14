@@ -10,13 +10,22 @@ public class Consumer : MonoBehaviour
     public AllSpeciesReuirement allSpeciesRequirement;
 
     public EcosystemMainManager ecosystemMainManager;
-    public NavMeshAgent navMeshAgent;  
+    public NavMeshAgent navMeshAgent;
+
+    [Header("Reproduction")]
+    public Reproduction reproductionScript;
+    public bool movingToMate;
 
     [Header("Fill out")]
     public float stoppingDistance;
     public Color colourOfObject;
 
-    [Header("Genes")]
+    [Header("Properties (Non-Mutate)")]
+    public float speed;
+    public float stamina;
+    public float weight;
+
+    [Header("Genes (Mutate)")]
     public bool isMale;
     public float height;
     public float strength;
@@ -27,18 +36,12 @@ public class Consumer : MonoBehaviour
     public float foodCapacity;  
     public float maxOffspring;
     public float reproductiveUrgeIncreaseSpeed;
-    public float attractiveness;
-    public float speed;
-    public float weight;
-    public float stamina;
-    public float fightOrFlightStrength10Flight0Fight;    
+    public float fightOrFlightStrength10Flight0Fight;
 
     [Header("Requirements")]
-    public float maxFoodLevel;
-    public float maxWaterLevel;
+    public float maxEnergyLevel;
     public float maxReproductiveUrge;
-    public float foodLevel;
-    public float waterLevel;
+    public float energyLevel;
     public float reproductiveUrge;
 
     [Header("Control Behaviour")]
@@ -52,6 +55,8 @@ public class Consumer : MonoBehaviour
     public List<GameObject> allDifferentGenderInRange;
     public GameObject closestPredator;
     public GameObject closestPrey;
+    public GameObject closestPotentialMate;
+    public GameObject mateMovingTo;
     public float distanceToNearestPred;
     public float distanceToNearestPrey_Consumable;
     public SphereCollider visionRadiusCollider;
@@ -60,9 +65,15 @@ public class Consumer : MonoBehaviour
     public GameObject objectInterestedIn;
     public bool runningAway;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        if (isMale == false)
+        {
+            this.gameObject.AddComponent<Reproduction>();
+            reproductionScript = GetComponent<Reproduction>();
+        }
         allSpeciesRequirement = GetComponent<AllSpeciesReuirement>();
         species = allSpeciesRequirement.species;
         _diet = allSpeciesRequirement.diet;
@@ -78,15 +89,16 @@ public class Consumer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (anyPrey_producerInRange == true)
-        {
-            AllPreyInRangeList();
-        }
-        if (anyPredatorInRange == true)
-        {
-            AllPredatorsInRangeList();
-        }
+        //if (anyPrey_producerInRange == true)
+        //{
+        //    AllPreyInRangeList();
+        //}
+        //if (anyPredatorInRange == true)
+        //{
+        //    AllPredatorsInRangeList();
+        //}
         ClosestPredatorAndPrey();
+        Reproduction();
         Interest();       
         Movement();        
         NavMeshMoveTo(new Vector3(positionMovingTo.x, positionMovingTo.y + allSpeciesRequirement.SpawnOffset, positionMovingTo.z));
@@ -98,23 +110,70 @@ public class Consumer : MonoBehaviour
 
     public void Reproduction()
     {
-        if (reproductiveUrge > foodLevel && reproductiveUrge > waterLevel)
+        if (reproductiveUrge > energyLevel)
         {
-            Debug.Log("Hi");
+            if(isMale == false)
+            {
+                if (GetComponent<Reproduction>().ReproduceCheck() == true)
+                {
+                    if (allDifferentGenderInRange.Count > 1)
+                    {
+                        closestPotentialMate = closestGameobjectInAList(allDifferentGenderInRange);
+                        if (closestPotentialMate.GetComponent<Consumer>().ReproduceCheck(this.gameObject.GetComponent<Consumer>()) == true)
+                        {
+                            movingToMate = true;
+                            mateMovingTo = closestPotentialMate;
+                        }
+                    }
+                }
+            }
+            else if (isMale == true)
+            {
+                if (allDifferentGenderInRange.Count > 1)
+                {
+                    closestPotentialMate = closestGameobjectInAList(allDifferentGenderInRange);
+                    if (closestPotentialMate.GetComponent<Consumer>().ReproduceCheck(this.gameObject.GetComponent<Consumer>()) == true)
+                    {
+                        movingToMate = true;
+                        mateMovingTo = closestPotentialMate;
+                    }
+                }
+            }
+               
         }
     }
 
-   
+    public bool ReproduceCheck(Consumer animalInterestedInThis)
+    {
+        bool returnTrueIfCanMate = false;
+        if(animalInterestedInThis.isMale != isMale)
+        {
+            if(isMale == false && movingToMate != true && runningAway != true)
+            {
+                if(GetComponent<Reproduction>().ReproduceCheck() == true)
+                {
+                    returnTrueIfCanMate = true;
+                }
+            }
+            else if (isMale == true && movingToMate != true && runningAway != true)
+            {
+                returnTrueIfCanMate = true;
+            }
+        }
+        movingToMate = true;
+        mateMovingTo = animalInterestedInThis.gameObject;
+        return returnTrueIfCanMate;
+    }
 
     public void Movement()
     {
-        if (runningAway == false)
+        if (Vector3.Distance(transform.position, positionMovingTo) <= stoppingDistance)
         {
-            if (Vector3.Distance(transform.position, positionMovingTo) <= stoppingDistance)
-            {
-                arrivedAtDesiredLocation = true;
-            }
+            arrivedAtDesiredLocation = true;
+        }
 
+        if (runningAway == false && movingToMate != true)
+        {            
             if (interested == true && arrivedAtDesiredLocation == true)
             {
                 GotInRangeOfObjectOrPositionInterestedIn(objectInterestedIn);
@@ -132,12 +191,10 @@ public class Consumer : MonoBehaviour
             }
         }
 
-        else if (runningAway == true)
+        if(movingToMate == true && runningAway == false)
         {
-            if (Vector3.Distance(transform.position, positionMovingTo) <= stoppingDistance)
-            {
-                runningAway = false;
-            }
+            positionMovingTo = mateMovingTo.transform.position;
+            NavMeshMoveTo(positionMovingTo);
         }
     }
 
@@ -268,66 +325,68 @@ public class Consumer : MonoBehaviour
     public void Interest()
     {
         //What is it interested in
-
-        //both in range
-        if (anyPrey_producerInRange == true && anyPredatorInRange == true)
+        if (anyPredatorInRange == true || movingToMate == false)
         {
-            interested = true;
-
-            if (distanceToNearestPred < distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+            if (anyPrey_producerInRange == true && anyPredatorInRange == true)
             {
-                objectInterestedIn = closestPredator;
-                runningAway = true;
-                getRunawayPosition(closestPredator.transform.position);
+                interested = true;
+
+                if (distanceToNearestPred < distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+                {
+                    objectInterestedIn = closestPredator;
+                    runningAway = true;
+                    getRunawayPosition(closestPredator.transform.position);
+                }
+                else if (distanceToNearestPred > distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+                {
+                    runningAway = false;
+                    objectInterestedIn = closestPrey;
+                    positionMovingTo = closestPrey.transform.position;
+                }
             }
-            else if (distanceToNearestPred > distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+            //only prey in range
+            else if (anyPrey_producerInRange == true && anyPredatorInRange == false)
             {
                 runningAway = false;
+                anyPredatorInRange = false;
+                closestPredator = null;
+
+                interested = true;
                 objectInterestedIn = closestPrey;
                 positionMovingTo = closestPrey.transform.position;
             }
-        }
-        //only prey in range
-        else if (anyPrey_producerInRange == true && anyPredatorInRange == false)
-        {
-            runningAway = false;
-            anyPredatorInRange = false;
-            closestPredator = null;
-            distanceToNearestPred = -1;
+            //only pred in range
+            else if (anyPrey_producerInRange == false && anyPredatorInRange == true)
+            {
+                runningAway = true;
+                anyPrey_producerInRange = false;
+                closestPrey = null;
 
+                interested = true;
+                objectInterestedIn = closestPredator;
+                getRunawayPosition(closestPredator.transform.position);
+            }
+            //no pred or prey in range
+            if (anyPrey_producerInRange == false && anyPredatorInRange == false)
+            {
+                runningAway = false;
+                objectInterestedIn = null;
+                interested = false;
+
+                anyPredatorInRange = false;
+                closestPredator = null;
+
+                anyPrey_producerInRange = false;
+                closestPrey = null;
+            }
+        }
+        else if (anyPredatorInRange == false && movingToMate == true)
+        {
             interested = true;
-            objectInterestedIn = closestPrey;
-            positionMovingTo = closestPrey.transform.position;
-        }
-        //only pred in range
-        else if (anyPrey_producerInRange == false && anyPredatorInRange == true)
-        {
-            runningAway = true;
-            anyPrey_producerInRange = false;
-            closestPrey = null;
-            distanceToNearestPrey_Consumable = -1;
-
-            interested = true;
-            objectInterestedIn = closestPredator;
-            getRunawayPosition(closestPredator.transform.position);
-        }
-        //no pred or prey in range
-        if (anyPrey_producerInRange == false && anyPredatorInRange == false)
-        {
-            runningAway = false;
-            objectInterestedIn = null;
-            interested = false;
-
-            anyPredatorInRange = false;
-            closestPredator = null;
-            distanceToNearestPred = -1;
-
-            anyPrey_producerInRange = false;
-            closestPrey = null;
-            distanceToNearestPrey_Consumable = -1;
+            objectInterestedIn = mateMovingTo;
+            positionMovingTo = mateMovingTo.transform.position;
         }
     }
-
     public GameObject closestGameobjectInAList(List<GameObject> listOfObjects)
     {
         float closestDistance = 999999999.0f;
@@ -396,17 +455,23 @@ public class Consumer : MonoBehaviour
     {
         foreach (GameObject item in allObjectsInRange)
         {
-            if (item.GetComponent<Consumer>() != null)
+            if (item.GetComponent<AllSpeciesReuirement>() != null)
             {
-                if (item.GetComponent<Consumer>().isMale == isMale)
+                if (item.GetComponent<AllSpeciesReuirement>().species == species)
                 {
-                    allSameGenderInRange.Add(item);
+                    if (item.GetComponent<Consumer>() != null)
+                    {
+                        if (item.GetComponent<Consumer>().isMale == isMale)
+                        {
+                            allSameGenderInRange.Add(item);
+                        }
+                        else if (item.GetComponent<Consumer>().isMale != isMale)
+                        {
+                            allDifferentGenderInRange.Add(item);
+                        }
+                    }
                 }
-                else if (item.GetComponent<Consumer>().isMale != isMale)
-                {
-                    allDifferentGenderInRange.Add(item);
-                }
-            }
+            }                
         }
     }
 
@@ -419,6 +484,7 @@ public class Consumer : MonoBehaviour
                 allObjectsInRange.Add(other.gameObject);
                 AllPredatorsInRangeList();
                 AllPreyInRangeList();
+                SameSpeciesInRangeList();
             }
         }
         else if (option == 2)
@@ -463,6 +529,18 @@ public class Consumer : MonoBehaviour
             if (allPreyInRange.Contains(other.gameObject) == true)
             {
                 allPreyInRange.Remove(other.gameObject);
+            }
+            if (allPreyInRange.Contains(other.gameObject) == true)
+            {
+                allPreyInRange.Remove(other.gameObject);
+            }
+            if (allSameGenderInRange.Contains(other.gameObject) == true)
+            {
+                allSameGenderInRange.Remove(other.gameObject);
+            }
+            if (allDifferentGenderInRange.Contains(other.gameObject) == true)
+            {
+                allDifferentGenderInRange.Remove(other.gameObject);
             }
         }
     }
