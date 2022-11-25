@@ -20,8 +20,8 @@ public class EcosystemMainManager : MonoBehaviour
         {
             //Spawn one animal for each of the count
             for (int i = 0; i < pop.startingCount; i++)
-            {  
-                SpawnAnimal(pop.prefab);               
+            {
+                SpawnAnimal(pop.prefab);
             }
         }
     }
@@ -29,7 +29,7 @@ public class EcosystemMainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
@@ -51,20 +51,11 @@ public class EcosystemMainManager : MonoBehaviour
 
         GameObject justSpawned = Instantiate(prefab, new Vector3(spawnPoint.x, prefab.GetComponent<AllSpeciesReuirement>().SpawnOffset, spawnPoint.z), Quaternion.identity);
 
-        if(justSpawned.GetComponent<Consumer>() != null)
+        if (justSpawned.GetComponent<Consumer>() != null)
         {
-            justSpawned.GetComponent<Consumer>().isMale = Random.Range(1, 3) > 1;
+            justSpawned.GetComponent<Consumer>().isMale = Random.Range(1, 3);
         }
     }
-
-    //public void SpawnAnimal(GameObject prefab)
-    //{
-    //    Vector3 spawnPoint = getRandomPosition();
-
-    //    spawnPoint = new Vector3(spawnPoint.x, prefab.transform.position.y, spawnPoint.z);
-
-    //    Instantiate(prefab, new Vector3(spawnPoint.x, spawnPoint.y + prefab.GetComponent<AllSpeciesReuirement>().SpawnOffset, spawnPoint.z), Quaternion.identity);
-    //}
 
     private void OnDrawGizmos()
     {

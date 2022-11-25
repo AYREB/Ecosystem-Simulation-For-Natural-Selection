@@ -180,8 +180,14 @@ MonoBehaviour:
   allSpeciesRequirement: {fileID: 0}
   ecosystemMainManager: {fileID: 0}
   navMeshAgent: {fileID: 0}
+  reproductionScript: {fileID: 0}
+  movingToMate: 0
   stoppingDistance: 2.5
   colourOfObject: {r: 1, g: 0, b: 0, a: 0}
+  speed: 3
+  stamina: 0
+  weight: 0
+  isMale: 0
   height: 0
   strength: 0
   width_length: 0
@@ -191,17 +197,10 @@ MonoBehaviour:
   foodCapacity: 0
   maxOffspring: 0
   reproductiveUrgeIncreaseSpeed: 0
-  attractiveness: 0
-  speed: 3
-  weight: 0
-  foodConsumptionSpeed: 0
-  stamina: 0
   fightOrFlightStrength10Flight0Fight: 2
-  maxFoodLevel: 0
-  maxWaterLevel: 0
+  maxEnergyLevel: 0
   maxReproductiveUrge: 0
-  foodLevel: 0
-  waterLevel: 0
+  energyLevel: 0
   reproductiveUrge: 0
   interested: 0
   anyPredatorInRange: 0
@@ -209,8 +208,12 @@ MonoBehaviour:
   allObjectsInRange: []
   allPredatorsInRange: []
   allPreyInRange: []
+  allSameGenderInRange: []
+  allDifferentGenderInRange: []
   closestPredator: {fileID: 0}
   closestPrey: {fileID: 0}
+  closestPotentialMate: {fileID: 0}
+  mateMovingTo: {fileID: 0}
   distanceToNearestPred: 0
   distanceToNearestPrey_Consumable: 0
   visionRadiusCollider: {fileID: 0}

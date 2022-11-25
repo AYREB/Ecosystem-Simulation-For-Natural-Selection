@@ -13,20 +13,25 @@ public class Consumer : MonoBehaviour
     public NavMeshAgent navMeshAgent;
 
     [Header("Reproduction")]
-    public Reproduction reproductionScript;
+    public ReproductionFemale reproductionScript;
     public bool movingToMate;
 
     [Header("Fill out")]
     public float stoppingDistance;
     public Color colourOfObject;
+    public int baseLifespanYears;
+    public float pregnancyCooldownTimerMax;
 
     [Header("Properties (Non-Mutate)")]
     public float speed;
     public float stamina;
     public float weight;
+    public float lifespanYears;
+
 
     [Header("Genes (Mutate)")]
-    public bool isMale;
+    //1 = male, 2 = female
+    public float isMale;
     public float height;
     public float strength;
     public float width_length;
@@ -35,14 +40,19 @@ public class Consumer : MonoBehaviour
     public float greed;
     public float foodCapacity;  
     public float maxOffspring;
-    public float reproductiveUrgeIncreaseSpeed;
+    public float antiReproductiveUrgeDecreaseSpeed;
     public float fightOrFlightStrength10Flight0Fight;
 
+    
+
     [Header("Requirements")]
+    //0 = no anti (wants to reproduce)
+    public float maxAntiReproductiveUrge;
+    public float antiReproductiveUrge;
+    //0 = low energy (needs food)
     public float maxEnergyLevel;
-    public float maxReproductiveUrge;
     public float energyLevel;
-    public float reproductiveUrge;
+
 
     [Header("Control Behaviour")]
     public bool interested;
@@ -64,16 +74,21 @@ public class Consumer : MonoBehaviour
     public Vector3 positionMovingTo;
     public GameObject objectInterestedIn;
     public bool runningAway;
+    public bool isFertile;
+    public float energyLevelRequiredForPregnancy;
+    public float[] myGenesListToPassToChildren;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (isMale == false)
+        if (isMale == 2)
         {
-            this.gameObject.AddComponent<Reproduction>();
-            reproductionScript = GetComponent<Reproduction>();
+            this.gameObject.AddComponent<ReproductionFemale>();
+            reproductionScript = GetComponent<ReproductionFemale>();
         }
+        energyLevel = maxEnergyLevel;
+        antiReproductiveUrge = maxAntiReproductiveUrge;
         allSpeciesRequirement = GetComponent<AllSpeciesReuirement>();
         species = allSpeciesRequirement.species;
         _diet = allSpeciesRequirement.diet;
@@ -83,7 +98,9 @@ public class Consumer : MonoBehaviour
         visionRadiusCollider.radius = visionRadius;
         navMeshAgent.speed = speed;
         positionMovingTo = ecosystemMainManager.getRandomPosition();
-        GetComponent<Renderer>().material.color = colourOfObject;        
+        GetComponent<Renderer>().material.color = colourOfObject;
+        lifespanYears = baseLifespanYears;
+        myGenesListToPassToChildren = new float[] { speed, stamina, weight, lifespanYears, isMale, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
     }
 
     // Update is called once per frame
@@ -99,8 +116,8 @@ public class Consumer : MonoBehaviour
         //}
         ClosestPredatorAndPrey();
         Reproduction();
-        Interest();       
-        Movement();        
+        Interest();
+        Movement();
         NavMeshMoveTo(new Vector3(positionMovingTo.x, positionMovingTo.y + allSpeciesRequirement.SpawnOffset, positionMovingTo.z));
         if (objectInterestedIn == null)
         {
@@ -108,62 +125,82 @@ public class Consumer : MonoBehaviour
         }
     }
 
-    public void Reproduction()
+    public bool ReproductionCheck()
     {
-        if (reproductiveUrge > energyLevel)
+        bool returnTrueIfCanReprodue = false;
+        if (isMale == 1)
         {
-            if(isMale == false)
+            Debug.Log("1");
+            if (runningAway == false)
             {
-                if (GetComponent<Reproduction>().ReproduceCheck() == true)
+                Debug.Log("2");
+                if (mateMovingTo == null)
                 {
-                    if (allDifferentGenderInRange.Count > 1)
+                    Debug.Log("3");
+                    if (antiReproductiveUrge < energyLevel)
                     {
-                        closestPotentialMate = closestGameobjectInAList(allDifferentGenderInRange);
-                        if (closestPotentialMate.GetComponent<Consumer>().ReproduceCheck(this.gameObject.GetComponent<Consumer>()) == true)
+                        Debug.Log("4");
+                        if (isFertile == true)
                         {
-                            movingToMate = true;
-                            mateMovingTo = closestPotentialMate;
+                            Debug.Log("5");
+                            returnTrueIfCanReprodue = true;
                         }
                     }
                 }
             }
-            else if (isMale == true)
+        }
+        else if (isMale == 2)
+        {
+            Debug.Log("z");
+            if (runningAway == false)
             {
-                if (allDifferentGenderInRange.Count > 1)
+                Debug.Log("x");
+                if (mateMovingTo == null)
                 {
-                    closestPotentialMate = closestGameobjectInAList(allDifferentGenderInRange);
-                    if (closestPotentialMate.GetComponent<Consumer>().ReproduceCheck(this.gameObject.GetComponent<Consumer>()) == true)
+                    Debug.Log("c");
+                    if (antiReproductiveUrge < energyLevel)
                     {
-                        movingToMate = true;
-                        mateMovingTo = closestPotentialMate;
+                        Debug.Log("v");
+                        if (isFertile == true)
+                        {
+                            Debug.Log("b");
+                            if (GetComponent<ReproductionFemale>().isPregnant == true)
+                            {
+                                Debug.Log("n");
+                                if (GetComponent<ReproductionFemale>().pregnancyTimerCoolingDown == false)
+                                {
+                                    Debug.Log("m");
+                                    returnTrueIfCanReprodue = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
-               
         }
+
+        return returnTrueIfCanReprodue;
     }
 
-    public bool ReproduceCheck(Consumer animalInterestedInThis)
+    public GameObject closestPotentialMateInAList(List<GameObject> listOfObjects, GameObject whoChecked)
     {
-        bool returnTrueIfCanMate = false;
-        if(animalInterestedInThis.isMale != isMale)
+        float closestDistance = 999999999.0f;
+        foreach (GameObject item in listOfObjects)
         {
-            if(isMale == false && movingToMate != true && runningAway != true)
+            if (item.GetComponent<Consumer>().ReproductionCheck() == false)
             {
-                if(GetComponent<Reproduction>().ReproduceCheck() == true)
-                {
-                    returnTrueIfCanMate = true;
-                }
+                continue;
             }
-            else if (isMale == true && movingToMate != true && runningAway != true)
+            float distance = Vector3.Distance(item.transform.position, transform.position);
+            if (distance < closestDistance)
             {
-                returnTrueIfCanMate = true;
+                return item;
             }
         }
-        movingToMate = true;
-        mateMovingTo = animalInterestedInThis.gameObject;
-        return returnTrueIfCanMate;
+        mateMovingTo = whoChecked;
+        return null;
     }
+
 
     public void Movement()
     {
@@ -172,7 +209,7 @@ public class Consumer : MonoBehaviour
             arrivedAtDesiredLocation = true;
         }
 
-        if (runningAway == false && movingToMate != true)
+        if (runningAway == false && movingToMate == false)
         {            
             if (interested == true && arrivedAtDesiredLocation == true)
             {
@@ -194,7 +231,7 @@ public class Consumer : MonoBehaviour
         if(movingToMate == true && runningAway == false)
         {
             positionMovingTo = mateMovingTo.transform.position;
-            NavMeshMoveTo(positionMovingTo);
+            NavMeshMoveTo(positionMovingTo);        
         }
     }
 
@@ -206,19 +243,22 @@ public class Consumer : MonoBehaviour
     private void GotInRangeOfObjectOrPositionInterestedIn(GameObject objectItWasInterestedIn)
     {
         //Eat Prey
-        if (objectItWasInterestedIn.GetComponent<AllSpeciesReuirement>() != null)
+        if (movingToMate != true)
         {
-            foreach (SpeciesEnum myDiet in _diet)
+            if (objectItWasInterestedIn.GetComponent<AllSpeciesReuirement>() != null)
             {
-                if (objectItWasInterestedIn.GetComponent<AllSpeciesReuirement>().species == myDiet)
+                foreach (SpeciesEnum myDiet in _diet)
                 {
-                    if (objectInterestedIn.GetComponent<ProducerNextTry>() != null)
+                    if (objectItWasInterestedIn.GetComponent<AllSpeciesReuirement>().species == myDiet)
                     {
-                        objectInterestedIn.GetComponent<ProducerNextTry>().BeenEaten(this.gameObject);
-                    }
-                    else if (objectInterestedIn.GetComponent<Consumer>() != null)
-                    {
-                        objectInterestedIn.GetComponent<Consumer>().BeenEaten(this.gameObject);
+                        if (objectInterestedIn.GetComponent<ProducerNextTry>() != null)
+                        {
+                            objectInterestedIn.GetComponent<ProducerNextTry>().BeenEaten(this.gameObject);
+                        }
+                        else if (objectInterestedIn.GetComponent<Consumer>() != null)
+                        {
+                            objectInterestedIn.GetComponent<Consumer>().BeenEaten(this.gameObject);
+                        }
                     }
                 }
             }
@@ -401,6 +441,8 @@ public class Consumer : MonoBehaviour
         return null;
     }
 
+
+
     private void AllPreyInRangeList()
     {
         foreach (GameObject item in allObjectsInRange)
@@ -463,11 +505,17 @@ public class Consumer : MonoBehaviour
                     {
                         if (item.GetComponent<Consumer>().isMale == isMale)
                         {
-                            allSameGenderInRange.Add(item);
+                            if (allSameGenderInRange.Contains(item) == false)
+                            {
+                                allSameGenderInRange.Add(item);
+                            }                           
                         }
                         else if (item.GetComponent<Consumer>().isMale != isMale)
                         {
-                            allDifferentGenderInRange.Add(item);
+                            if(allDifferentGenderInRange.Contains(item) == false)
+                            {
+                                allDifferentGenderInRange.Add(item);
+                            }                            
                         }
                     }
                 }
@@ -522,25 +570,25 @@ public class Consumer : MonoBehaviour
             {
                 allObjectsInRange.Remove(other.gameObject);
             }
+
             if (allPredatorsInRange.Contains(other.gameObject) == true)
             {
                 allPredatorsInRange.Remove(other.gameObject);
             }
-            if (allPreyInRange.Contains(other.gameObject) == true)
-            {
-                allPreyInRange.Remove(other.gameObject);
-            }
-            if (allPreyInRange.Contains(other.gameObject) == true)
-            {
-                allPreyInRange.Remove(other.gameObject);
-            }
+
             if (allSameGenderInRange.Contains(other.gameObject) == true)
             {
                 allSameGenderInRange.Remove(other.gameObject);
             }
+
             if (allDifferentGenderInRange.Contains(other.gameObject) == true)
             {
                 allDifferentGenderInRange.Remove(other.gameObject);
+            }
+
+            if (allPreyInRange.Contains(other.gameObject) == true)
+            {
+                allPreyInRange.Remove(other.gameObject);
             }
         }
     }
