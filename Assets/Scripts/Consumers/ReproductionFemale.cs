@@ -9,21 +9,26 @@ public class ReproductionFemale : MonoBehaviour
     public bool pregnancyTimerCoolingDown;
     public bool isFertile;
     public float energyLevelRequiredForPregnancy;
-    public float pregnancyTimerMax;
-    public float currentPregnancyTimer;
+    public float pregnancyCooldownTimerMax;
+    public float currentPregnancyCooldownTimer;
+    public float maxNumberOfOffspring;
+
+    public float[] childGenes;
 
     // Start is called before the first frame update
     void Start()
     {
+        consumerScript = GetComponent<Consumer>();
         isFertile = consumerScript.isFertile;
         energyLevelRequiredForPregnancy = consumerScript.energyLevelRequiredForPregnancy;
-        pregnancyTimerMax = consumerScript.pregnancyCooldownTimerMax;
+        pregnancyCooldownTimerMax = consumerScript.pregnancyCooldownTimerMax;
+        maxNumberOfOffspring = consumerScript.maxOffspring;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currentPregnancyTimer <= 0)
+        if (currentPregnancyCooldownTimer <= 0)
         {
             pregnancyTimerCoolingDown = false;
         }
@@ -33,31 +38,30 @@ public class ReproductionFemale : MonoBehaviour
         }
     }
 
-    //public bool ReproduceCheck()
-    //{
-    //    bool returnBackTrueForReproduce = false;
-    //    if (isPregnant == false)
-    //    {
-    //        if (pregnancyTimerCoolingDown == false)
-    //        {
-    //            if (isFertile == true)
-    //            {
-    //                if (energyLevelRequiredForPregnancy <= consumerScript.energyLevel)
-    //                {
-    //                    returnBackTrueForReproduce = true;
-    //                }
-    //            }
-    //        }
-    //    }
-    //    return returnBackTrueForReproduce;
-    //}
-
-    public void BeginPregnancy(float[] motherGenes, float[] fatherGenes)
+    public void BeginPregnancy(float[] motherGenes, float[] fatherGenes, GameObject father)
     {
-        if (isPregnant == false)
-        {
-            Debug.Log("WASSSUUUPPP");
-            isPregnant = true;
-        }
+        StartCoroutine(DisableMovementToMate(father));
+        Debug.Log("Pregnancy Began");
+        isPregnant = true;
+        PrepareChildrenForBirth();
+    }
+
+    public void PrepareChildrenForBirth()
+    {
+        Debug.Log("Yo");
+    }
+
+    public IEnumerator DisableMovementToMate(GameObject father)
+    {
+        yield return new WaitForSeconds(3);
+        consumerScript.mateMovingTo = null;
+        consumerScript.movingToMate = false;
+        consumerScript.interested = false;
+        consumerScript.objectInterestedIn = null;
+
+        father.GetComponent<Consumer>().mateMovingTo = null;
+        father.GetComponent<Consumer>().movingToMate = false;
+        father.GetComponent<Consumer>().interested = false;
+        father.GetComponent<Consumer>().objectInterestedIn = null;
     }
 }

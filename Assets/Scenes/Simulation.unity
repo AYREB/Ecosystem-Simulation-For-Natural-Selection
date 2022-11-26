@@ -718,6 +718,14 @@ PrefabInstance:
       propertyPath: isMale
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+      propertyPath: isFertile
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+      propertyPath: maxOffspring
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: m_Name
       value: Rabbit (1)
@@ -1977,6 +1985,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: isMale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+      propertyPath: isFertile
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}

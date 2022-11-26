@@ -19,7 +19,6 @@ public class Consumer : MonoBehaviour
     [Header("Fill out")]
     public float stoppingDistance;
     public Color colourOfObject;
-    public int baseLifespanYears;
     public float pregnancyCooldownTimerMax;
 
     [Header("Properties (Non-Mutate)")]
@@ -99,29 +98,33 @@ public class Consumer : MonoBehaviour
         navMeshAgent.speed = speed;
         positionMovingTo = ecosystemMainManager.getRandomPosition();
         GetComponent<Renderer>().material.color = colourOfObject;
-        lifespanYears = baseLifespanYears;
         myGenesListToPassToChildren = new float[] { speed, stamina, weight, lifespanYears, isMale, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (anyPrey_producerInRange == true)
-        //{
-        //    AllPreyInRangeList();
-        //}
-        //if (anyPredatorInRange == true)
-        //{
-        //    AllPredatorsInRangeList();
-        //}
         ClosestPredatorAndPrey();
-        Reproduction();
-        Interest();
         Movement();
         NavMeshMoveTo(new Vector3(positionMovingTo.x, positionMovingTo.y + allSpeciesRequirement.SpawnOffset, positionMovingTo.z));
+        Interest();
+        if (allDifferentGenderInRange.Count > 0)
+        {
+            MaleReproductionCheck();
+        }       
         if (objectInterestedIn == null)
         {
             interested = false;
+        }
+    }
+
+    public void HandleBoolsControlling()
+    {
+        if (anyPredatorInRange == true)
+        {
+            movingToMate = false;
+            mateMovingTo = null;
+            closestPotentialMate = null;
         }
     }
 
@@ -130,19 +133,14 @@ public class Consumer : MonoBehaviour
         bool returnTrueIfCanReprodue = false;
         if (isMale == 1)
         {
-            Debug.Log("1");
             if (runningAway == false)
             {
-                Debug.Log("2");
                 if (mateMovingTo == null)
                 {
-                    Debug.Log("3");
                     if (antiReproductiveUrge < energyLevel)
                     {
-                        Debug.Log("4");
                         if (isFertile == true)
                         {
-                            Debug.Log("5");
                             returnTrueIfCanReprodue = true;
                         }
                     }
@@ -151,25 +149,18 @@ public class Consumer : MonoBehaviour
         }
         else if (isMale == 2)
         {
-            Debug.Log("z");
             if (runningAway == false)
             {
-                Debug.Log("x");
                 if (mateMovingTo == null)
                 {
-                    Debug.Log("c");
                     if (antiReproductiveUrge < energyLevel)
                     {
-                        Debug.Log("v");
                         if (isFertile == true)
                         {
-                            Debug.Log("b");
-                            if (GetComponent<ReproductionFemale>().isPregnant == true)
+                            if (GetComponent<ReproductionFemale>().isPregnant == false)
                             {
-                                Debug.Log("n");
                                 if (GetComponent<ReproductionFemale>().pregnancyTimerCoolingDown == false)
                                 {
-                                    Debug.Log("m");
                                     returnTrueIfCanReprodue = true;
                                 }
                             }
@@ -182,8 +173,9 @@ public class Consumer : MonoBehaviour
         return returnTrueIfCanReprodue;
     }
 
-    public GameObject closestPotentialMateInAList(List<GameObject> listOfObjects, GameObject whoChecked)
+    public GameObject closestPotentialMateInAList(List<GameObject> listOfObjects)
     {
+        GameObject closestObjectToReturn = null;
         float closestDistance = 999999999.0f;
         foreach (GameObject item in listOfObjects)
         {
@@ -194,11 +186,41 @@ public class Consumer : MonoBehaviour
             float distance = Vector3.Distance(item.transform.position, transform.position);
             if (distance < closestDistance)
             {
-                return item;
+                closestObjectToReturn = item;
             }
         }
-        mateMovingTo = whoChecked;
-        return null;
+        return closestObjectToReturn;
+    }
+
+    public void MaleReproductionCheck()
+    {
+        if (isMale == 1)
+        {
+            if (ReproductionCheck() == true)
+            {
+                closestPotentialMate = closestPotentialMateInAList(allDifferentGenderInRange);
+                if (closestPotentialMate != null)
+                {
+                    mateMovingTo = closestPotentialMate;
+                    movingToMate = true;
+                    positionMovingTo = mateMovingTo.transform.position;
+                    interested = true;
+                    objectInterestedIn = mateMovingTo;
+                    mateMovingTo.GetComponent<Consumer>().FemaleReproductionRequest(this.gameObject, myGenesListToPassToChildren);
+                }
+                
+            }
+        }
+    }
+
+    public void FemaleReproductionRequest(GameObject maleRequesting, float[] fatherGenesArray)
+    {
+        mateMovingTo = maleRequesting;
+        movingToMate = true;
+        positionMovingTo = maleRequesting.transform.position;
+        interested = true;
+        objectInterestedIn = maleRequesting;
+        reproductionScript.BeginPregnancy(myGenesListToPassToChildren, fatherGenesArray, maleRequesting);
     }
 
 
@@ -215,7 +237,7 @@ public class Consumer : MonoBehaviour
             {
                 GotInRangeOfObjectOrPositionInterestedIn(objectInterestedIn);
                 arrivedAtDesiredLocation = false;
-                NavMeshMoveTo(positionMovingTo);
+                //NavMeshMoveTo(positionMovingTo);
             }
             else if (interested == false)
             {
@@ -223,7 +245,7 @@ public class Consumer : MonoBehaviour
                 {
                     arrivedAtDesiredLocation = false;
                     positionMovingTo = ecosystemMainManager.getRandomPosition();
-                    NavMeshMoveTo(positionMovingTo);
+                    //NavMeshMoveTo(positionMovingTo);
                 }
             }
         }
@@ -231,7 +253,7 @@ public class Consumer : MonoBehaviour
         if(movingToMate == true && runningAway == false)
         {
             positionMovingTo = mateMovingTo.transform.position;
-            NavMeshMoveTo(positionMovingTo);        
+            //NavMeshMoveTo(positionMovingTo);        
         }
     }
 
@@ -262,6 +284,10 @@ public class Consumer : MonoBehaviour
                     }
                 }
             }
+        }
+        else
+        {
+
         }
     }
 
