@@ -11,7 +11,11 @@ public class ReproductionFemale : MonoBehaviour
     public float energyLevelRequiredForPregnancy;
     public float pregnancyCooldownTimerMax;
     public float currentPregnancyCooldownTimer;
-    public float maxNumberOfOffspring;
+    public int maxNumberOfOffspring;
+
+    [Header("Number Of Children")]
+    public List<int> oneOfEachNumberOfChildren = new List<int>();
+    public List<int> numberOfEachNumberOfChildren = new List<int>();
 
     public float[] childGenes;
 
@@ -22,7 +26,7 @@ public class ReproductionFemale : MonoBehaviour
         isFertile = consumerScript.isFertile;
         energyLevelRequiredForPregnancy = consumerScript.energyLevelRequiredForPregnancy;
         pregnancyCooldownTimerMax = consumerScript.pregnancyCooldownTimerMax;
-        maxNumberOfOffspring = consumerScript.maxOffspring;
+        maxNumberOfOffspring = (int)consumerScript.maxOffspring;
     }
 
     // Update is called once per frame
@@ -48,7 +52,29 @@ public class ReproductionFemale : MonoBehaviour
 
     public void PrepareChildrenForBirth()
     {
-        Debug.Log("Yo");
+        int howManyChildrenWillIGiveBirthTo = NumberOfChildrenToMake();
+
+    }
+
+    public int NumberOfChildrenToMake()
+    {
+        oneOfEachNumberOfChildren = new List<int>();
+        numberOfEachNumberOfChildren = new List<int>();
+
+        for (int i = 0; i < maxNumberOfOffspring; i++)
+        {
+            oneOfEachNumberOfChildren.Add(i + 1);
+        }
+
+        for (int i = 0; i < oneOfEachNumberOfChildren.Count; i++)
+        {
+            for (int x = 0; x < oneOfEachNumberOfChildren[i]; x++)
+            {
+                numberOfEachNumberOfChildren.Add(oneOfEachNumberOfChildren[i]);
+            }
+        }
+
+        return (numberOfEachNumberOfChildren[Random.Range(0, numberOfEachNumberOfChildren.Count)]);
     }
 
     public IEnumerator DisableMovementToMate(GameObject father)
