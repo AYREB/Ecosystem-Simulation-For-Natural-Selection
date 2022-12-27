@@ -15,11 +15,14 @@ public class Consumer : MonoBehaviour
     [Header("Reproduction")]
     public ReproductionFemale reproductionScript;
     public bool movingToMate;
+    public float mutationAmount;
+    public float mutationChance;
 
     [Header("Fill out")]
     public float stoppingDistance;
     public Color colourOfObject;
     public float pregnancyCooldownTimerMax;
+    public GameObject objectToGiveBirthTo;
 
     [Header("Properties (Non-Mutate)")]
     public float speed;
@@ -98,7 +101,24 @@ public class Consumer : MonoBehaviour
         navMeshAgent.speed = speed;
         positionMovingTo = ecosystemMainManager.getRandomPosition();
         GetComponent<Renderer>().material.color = colourOfObject;
-        myGenesListToPassToChildren = new float[] { speed, stamina, weight, lifespanYears, isMale, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
+        myGenesListToPassToChildren = new float[] {speed, stamina, weight, lifespanYears, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
+    }
+
+    public void ApplierAtBirth()
+    {
+        energyLevel = maxEnergyLevel;
+        antiReproductiveUrge = maxAntiReproductiveUrge;
+        allSpeciesRequirement = GetComponent<AllSpeciesReuirement>();
+        species = allSpeciesRequirement.species;
+        _diet = allSpeciesRequirement.diet;
+        ecosystemMainManager = FindObjectOfType<EcosystemMainManager>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        visionRadiusCollider = GetComponentInChildren<SphereCollider>();
+        visionRadiusCollider.radius = visionRadius;
+        navMeshAgent.speed = speed;
+        positionMovingTo = ecosystemMainManager.getRandomPosition();
+        GetComponent<Renderer>().material.color = colourOfObject;
+        myGenesListToPassToChildren = new float[] { speed, stamina, weight, lifespanYears, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
     }
 
     // Update is called once per frame

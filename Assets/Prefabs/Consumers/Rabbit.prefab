@@ -182,23 +182,25 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   reproductionScript: {fileID: 0}
   movingToMate: 0
+  mutationAmount: 0.2
+  mutationChance: 100
   stoppingDistance: 2.5
   colourOfObject: {r: 0, g: 1, b: 0.6911516, a: 0}
-  baseLifespanYears: 0
   pregnancyCooldownTimerMax: 0
+  objectToGiveBirthTo: {fileID: 8957629482427661547}
   speed: 5
-  stamina: 0
-  weight: 0
-  lifespanYears: 0
+  stamina: 5
+  weight: 5
+  lifespanYears: 5
   isMale: 0
-  height: 0
-  strength: 0
-  width_length: 0
+  height: 5
+  strength: 5
+  width_length: 5
   visionRadius: 10
-  gestationDuration: 0
-  greed: 0
-  foodCapacity: 0
-  maxOffspring: 0
+  gestationDuration: 5
+  greed: 5
+  foodCapacity: 5
+  maxOffspring: 5
   antiReproductiveUrgeDecreaseSpeed: 0
   fightOrFlightStrength10Flight0Fight: 10
   maxAntiReproductiveUrge: 0
