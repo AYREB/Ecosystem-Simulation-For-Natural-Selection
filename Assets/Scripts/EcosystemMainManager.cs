@@ -6,6 +6,7 @@ public class EcosystemMainManager : MonoBehaviour
 {
     public bool animalsCanMutate;
     public bool plantsCanMutate;
+    public int secondsPerYearInGame;
 
     [Range(10, 1000)]
     public float range;

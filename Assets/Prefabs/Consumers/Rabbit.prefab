@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 4248605193927634360}
   - component: {fileID: 8450009613675938794}
   - component: {fileID: 3578521265758576577}
+  - component: {fileID: 2443930618097648787}
   - component: {fileID: 5627311383270748372}
   - component: {fileID: 1872822054}
   - component: {fileID: 1965161179}
@@ -184,15 +185,19 @@ MonoBehaviour:
   movingToMate: 0
   mutationAmount: 0.2
   mutationChance: 100
+  growthScript: {fileID: 2443930618097648787}
+  scaleOfAnimalAtBirth: 0.2
   stoppingDistance: 2.5
-  colourOfObject: {r: 0, g: 1, b: 0.6911516, a: 0}
+  colorOfMale: {r: 0.078232765, g: 0, b: 1, a: 0}
+  colorOfFemale: {r: 0, g: 1, b: 0.7647791, a: 0}
   pregnancyCooldownTimerMax: 0
   objectToGiveBirthTo: {fileID: 8957629482427661547}
   speed: 5
   stamina: 5
   weight: 5
-  lifespanYears: 5
-  isMale: 0
+  lifespanYears: 100
+  colourOfObject: {r: 1, g: 0.9687811, b: 0, a: 0}
+  isMale: 1
   height: 5
   strength: 5
   width_length: 5
@@ -226,9 +231,30 @@ MonoBehaviour:
   positionMovingTo: {x: 0, y: 0, z: 0}
   objectInterestedIn: {fileID: 0}
   runningAway: 0
-  isFertile: 1
+  isFertile: 0
   energyLevelRequiredForPregnancy: 0
   myGenesListToPassToChildren: []
+--- !u!114 &2443930618097648787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957629482427661547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f52d2e746273c46b85d97017b12d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumerScript: {fileID: 3578521265758576577}
+  ecosystemMainManager: {fileID: 0}
+  secondsPerYearInGame: 0
+  body: {fileID: 8957629482427661547}
+  timeOfBirth: 0
+  scaleAtBirth: 0
+  timerValue: 0
+  ScaleAddedPeyYear: 0
+  Age: 0
 --- !u!195 &5627311383270748372
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -18,9 +18,14 @@ public class Consumer : MonoBehaviour
     public float mutationAmount;
     public float mutationChance;
 
+    [Header("Growth")]
+    public Growth growthScript;
+    public float scaleOfAnimalAtBirth;
+
     [Header("Fill out")]
     public float stoppingDistance;
-    public Color colourOfObject;
+    public Color colorOfMale;
+    public Color colorOfFemale;
     public float pregnancyCooldownTimerMax;
     public GameObject objectToGiveBirthTo;
 
@@ -29,6 +34,7 @@ public class Consumer : MonoBehaviour
     public float stamina;
     public float weight;
     public float lifespanYears;
+    public Color colourOfObject;
 
 
     [Header("Genes (Mutate)")]
@@ -88,6 +94,11 @@ public class Consumer : MonoBehaviour
         {
             this.gameObject.AddComponent<ReproductionFemale>();
             reproductionScript = GetComponent<ReproductionFemale>();
+            colourOfObject = colorOfFemale;
+        }
+        else
+        {
+            colourOfObject = colorOfMale;
         }
         energyLevel = maxEnergyLevel;
         antiReproductiveUrge = maxAntiReproductiveUrge;
@@ -352,7 +363,6 @@ public class Consumer : MonoBehaviour
         return anyPrey;
     }
 
-    //FIX THIS
     public void getRunawayPosition(Vector3 target)
     {
         Vector3 returnVal = new Vector3(0, 0, 0);
@@ -486,8 +496,6 @@ public class Consumer : MonoBehaviour
         }
         return null;
     }
-
-
 
     private void AllPreyInRangeList()
     {
@@ -640,6 +648,20 @@ public class Consumer : MonoBehaviour
     }
 
     private void BeenEaten(GameObject objectEatenBy)
+    {
+        Consumer[] allConsumers = FindObjectsOfType<Consumer>();
+        foreach (Consumer item in allConsumers)
+        {
+            item.allObjectsInRange.Remove(this.gameObject);
+            item.allPredatorsInRange.Remove(this.gameObject);
+            item.allPreyInRange.Remove(this.gameObject);
+
+            item.VisionTriggerColliderSawSomething_1Enter_2Stay_3Exit(3, GetComponent<MeshCollider>());
+        }
+        Destroy(this.gameObject);
+    }
+
+    public void DiedWithoutBeingEaten()
     {
         Consumer[] allConsumers = FindObjectsOfType<Consumer>();
         foreach (Consumer item in allConsumers)

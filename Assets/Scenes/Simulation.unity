@@ -937,6 +937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animalsCanMutate: 0
   plantsCanMutate: 0
+  secondsPerYearInGame: 5
   range: 161
   initalPopulations:
   - name: Rabbit
@@ -8894,13 +8895,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: isMale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: m_Name
       value: Rabbit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
@@ -11356,6 +11357,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2443930618097648787, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+      propertyPath: ecosystemMainManager
+      value: 
+      objectReference: {fileID: 93559711}
     - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -11399,22 +11404,6 @@ PrefabInstance:
     - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: isMale
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: colourOfObject.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: colourOfObject.g
-      value: 0.9687811
-      objectReference: {fileID: 0}
-    - target: {fileID: 3578521265758576577, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: colourOfObject.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
       propertyPath: m_Name
