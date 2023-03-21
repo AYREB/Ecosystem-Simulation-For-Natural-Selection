@@ -15,14 +15,21 @@ public class Growth : MonoBehaviour
     public float ScaleAddedPeyYear;
 
     public int Age;
-    private float ageChildMax;
-    private float ageAdultMax;
-    private float ageElderlyMaxorDeath;
+    public float ageChildMax;
+    public float ageAdultMax;
+    public float ageElderlyMaxorDeath;
+
+    public bool happened1;
+    public bool happened2;
+    public bool happened3;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        happened1 = false;
+        happened2 = false;
+        happened3 = false;
         timeOfBirth = Time.time;
         ecosystemMainManager = FindObjectOfType<EcosystemMainManager>();
         secondsPerYearInGame = ecosystemMainManager.secondsPerYearInGame;
@@ -74,16 +81,28 @@ public class Growth : MonoBehaviour
     {
         if (Age <= ageChildMax)
         {
-            consumerScript.isFertile = false;
+            if (happened1 == false)
+            {
+                consumerScript.isFertile = false;
+                happened1 = true;
+            }           
             ScaleUpAsGrowing();
         }
         else if (Age > ageChildMax || Age <= ageAdultMax)
         {
-            consumerScript.isFertile = true;
+            if (happened2 == false)
+            {
+                consumerScript.isFertile = true;
+                happened2 = true;
+            }
         }
         else if (Age > ageAdultMax || Age < ageElderlyMaxorDeath)
         {
-            consumerScript.isFertile = false;
+            if(happened3 == false)
+            {
+                consumerScript.isFertile = false;
+                happened3 = true;
+            }          
         }
         else if (Age == ageElderlyMaxorDeath)
         {

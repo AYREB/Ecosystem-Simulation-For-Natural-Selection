@@ -69,10 +69,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2488000106568018896}
   - component: {fileID: -6370458375341000106}
-  - component: {fileID: 4248605193927634360}
-  - component: {fileID: 8450009613675938794}
   - component: {fileID: 3578521265758576577}
   - component: {fileID: 2443930618097648787}
+  - component: {fileID: 4248605193927634360}
+  - component: {fileID: 8450009613675938794}
   - component: {fileID: 5627311383270748372}
   - component: {fileID: 1872822054}
   - component: {fileID: 1965161179}
@@ -114,56 +114,6 @@ MonoBehaviour:
   SpawnOffset: 1.1
   species: 1
   diet: 00000000
---- !u!33 &4248605193927634360
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8957629482427661547}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8450009613675938794
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8957629482427661547}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 343f4d47dd3b5044fa0ed9c3672c63be, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &3578521265758576577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +140,7 @@ MonoBehaviour:
   stoppingDistance: 2.5
   colorOfMale: {r: 0.078232765, g: 0, b: 1, a: 0}
   colorOfFemale: {r: 0, g: 1, b: 0.7647791, a: 0}
-  pregnancyCooldownTimerMax: 0
+  pregnancyCooldownTimerMax: 10
   objectToGiveBirthTo: {fileID: 8957629482427661547}
   speed: 5
   stamina: 5
@@ -255,6 +205,62 @@ MonoBehaviour:
   timerValue: 0
   ScaleAddedPeyYear: 0
   Age: 0
+  ageChildMax: 0
+  ageAdultMax: 0
+  ageElderlyMaxorDeath: 0
+  happened1: 0
+  happened2: 0
+  happened3: 0
+--- !u!33 &4248605193927634360
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957629482427661547}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &8450009613675938794
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957629482427661547}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 343f4d47dd3b5044fa0ed9c3672c63be, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!195 &5627311383270748372
 NavMeshAgent:
   m_ObjectHideFlags: 0

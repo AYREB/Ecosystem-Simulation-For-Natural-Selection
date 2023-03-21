@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Consumer : MonoBehaviour
 {
@@ -85,6 +86,7 @@ public class Consumer : MonoBehaviour
     public bool isFertile;
     public float energyLevelRequiredForPregnancy;
     public float[] myGenesListToPassToChildren;
+    public bool loopholeRunning;
 
 
     // Start is called before the first frame update
@@ -113,6 +115,7 @@ public class Consumer : MonoBehaviour
         positionMovingTo = ecosystemMainManager.getRandomPosition();
         GetComponent<Renderer>().material.color = colourOfObject;
         myGenesListToPassToChildren = new float[] {speed, stamina, weight, lifespanYears, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
+        loopholeRunning = false;
     }
 
     public void ApplierAtBirth()
@@ -135,6 +138,7 @@ public class Consumer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RunLoophole();
         ClosestPredatorAndPrey();
         Movement();
         NavMeshMoveTo(new Vector3(positionMovingTo.x, positionMovingTo.y + allSpeciesRequirement.SpawnOffset, positionMovingTo.z));
@@ -147,6 +151,22 @@ public class Consumer : MonoBehaviour
         {
             interested = false;
         }
+    }
+
+    public void RunLoophole()
+    {
+        if(loopholeRunning == false)
+        {
+            loopholeRunning = true;
+            StartCoroutine(Loophole());
+        }
+    }
+
+    public IEnumerator Loophole()
+    {
+        runningAway = true;
+        yield return new WaitForSeconds(2);              
+        loopholeRunning = false;
     }
 
     public void HandleBoolsControlling()
@@ -276,7 +296,6 @@ public class Consumer : MonoBehaviour
                 {
                     arrivedAtDesiredLocation = false;
                     positionMovingTo = ecosystemMainManager.getRandomPosition();
-                    //NavMeshMoveTo(positionMovingTo);
                 }
             }
         }
@@ -315,10 +334,6 @@ public class Consumer : MonoBehaviour
                     }
                 }
             }
-        }
-        else
-        {
-
         }
     }
 

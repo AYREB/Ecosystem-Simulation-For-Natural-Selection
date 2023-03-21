@@ -69,9 +69,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8331317240184011571}
   - component: {fileID: 8542901700682099381}
+  - component: {fileID: 6967235921643507490}
+  - component: {fileID: -4492724261284746405}
   - component: {fileID: 7777714221410696539}
   - component: {fileID: 2620418717017035529}
-  - component: {fileID: 6967235921643507490}
   - component: {fileID: 2234304293748531255}
   - component: {fileID: 5843963717452001221}
   - component: {fileID: 5843963717275773496}
@@ -113,6 +114,103 @@ MonoBehaviour:
   SpawnOffset: 1.1
   species: 3
   diet: 02000000
+--- !u!114 &6967235921643507490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266810157810920456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d070e2995698242a9e8d2676767eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  species: 3
+  _diet: 0200000001000000
+  allSpeciesRequirement: {fileID: 0}
+  ecosystemMainManager: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  reproductionScript: {fileID: 0}
+  movingToMate: 0
+  mutationAmount: 0.2
+  mutationChance: 100
+  growthScript: {fileID: 2443930618097648787, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
+  scaleOfAnimalAtBirth: 0.2
+  stoppingDistance: 2.5
+  colorOfMale: {r: 0.2924528, g: 0.11506807, b: 0.0041384757, a: 1}
+  colorOfFemale: {r: 0.41509432, g: 0.27512434, b: 0.18992524, a: 0}
+  pregnancyCooldownTimerMax: 10
+  objectToGiveBirthTo: {fileID: 3266810157810920456}
+  speed: 5
+  stamina: 5
+  weight: 5
+  lifespanYears: 100
+  colourOfObject: {r: 1, g: 0.9687811, b: 0, a: 0}
+  isMale: 1
+  height: 5
+  strength: 5
+  width_length: 5
+  visionRadius: 10
+  gestationDuration: 5
+  greed: 5
+  foodCapacity: 5
+  maxOffspring: 5
+  antiReproductiveUrgeDecreaseSpeed: 0
+  fightOrFlightStrength10Flight0Fight: 10
+  maxAntiReproductiveUrge: 0
+  antiReproductiveUrge: 0
+  maxEnergyLevel: 100
+  energyLevel: 0
+  interested: 0
+  anyPredatorInRange: 0
+  anyPrey_producerInRange: 0
+  allObjectsInRange: []
+  allPredatorsInRange: []
+  allPreyInRange: []
+  allSameGenderInRange: []
+  allDifferentGenderInRange: []
+  closestPredator: {fileID: 0}
+  closestPrey: {fileID: 0}
+  closestPotentialMate: {fileID: 0}
+  mateMovingTo: {fileID: 0}
+  distanceToNearestPred: 0
+  distanceToNearestPrey_Consumable: 0
+  visionRadiusCollider: {fileID: 0}
+  arrivedAtDesiredLocation: 1
+  positionMovingTo: {x: 0, y: 0, z: 0}
+  objectInterestedIn: {fileID: 0}
+  runningAway: 0
+  isFertile: 0
+  energyLevelRequiredForPregnancy: 0
+  myGenesListToPassToChildren: []
+--- !u!114 &-4492724261284746405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266810157810920456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f52d2e746273c46b85d97017b12d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumerScript: {fileID: 6967235921643507490}
+  ecosystemMainManager: {fileID: 0}
+  secondsPerYearInGame: 0
+  body: {fileID: 3266810157810920456}
+  timeOfBirth: 0
+  scaleAtBirth: 0
+  timerValue: 0
+  ScaleAddedPeyYear: 0
+  Age: 0
+  ageChildMax: 0
+  ageAdultMax: 0
+  ageElderlyMaxorDeath: 0
+  happened1: 0
+  happened2: 0
+  happened3: 0
 --- !u!33 &7777714221410696539
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -163,64 +261,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6967235921643507490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3266810157810920456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53d070e2995698242a9e8d2676767eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  species: 3
-  _diet: 02000000
-  allSpeciesRequirement: {fileID: 0}
-  ecosystemMainManager: {fileID: 0}
-  navMeshAgent: {fileID: 0}
-  reproductionScript: {fileID: 0}
-  movingToMate: 0
-  stoppingDistance: 2.5
-  colourOfObject: {r: 0.21698111, g: 0.14827338, b: 0.019446416, a: 1}
-  speed: 3
-  stamina: 0
-  weight: 0
-  isMale: 0
-  height: 0
-  strength: 0
-  width_length: 0
-  visionRadius: 4
-  gestationDuration: 0
-  greed: 0
-  foodCapacity: 0
-  maxOffspring: 0
-  reproductiveUrgeIncreaseSpeed: 0
-  fightOrFlightStrength10Flight0Fight: 10
-  maxEnergyLevel: 0
-  maxReproductiveUrge: 0
-  energyLevel: 0
-  reproductiveUrge: 0
-  interested: 0
-  anyPredatorInRange: 0
-  anyPrey_producerInRange: 0
-  allObjectsInRange: []
-  allPredatorsInRange: []
-  allPreyInRange: []
-  allSameGenderInRange: []
-  allDifferentGenderInRange: []
-  closestPredator: {fileID: 0}
-  closestPrey: {fileID: 0}
-  closestPotentialMate: {fileID: 0}
-  mateMovingTo: {fileID: 0}
-  distanceToNearestPred: 0
-  distanceToNearestPrey_Consumable: 0
-  visionRadiusCollider: {fileID: 0}
-  arrivedAtDesiredLocation: 1
-  positionMovingTo: {x: 0, y: 0, z: 0}
-  objectInterestedIn: {fileID: 0}
-  runningAway: 0
 --- !u!195 &2234304293748531255
 NavMeshAgent:
   m_ObjectHideFlags: 0

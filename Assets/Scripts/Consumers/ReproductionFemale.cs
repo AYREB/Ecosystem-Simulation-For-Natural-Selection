@@ -66,15 +66,27 @@ public class ReproductionFemale : MonoBehaviour
             GameObject babyJustGivenBirthTo = Instantiate(objectToGiveBirthTo, new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z), Quaternion.identity);
             GeneAssigner(babyJustGivenBirthTo, genesToApply);
             babyJustGivenBirthTo.GetComponent<Consumer>().ApplierAtBirth();
+            babyJustGivenBirthTo.GetComponent<Growth>().Age = 0;
+            babyJustGivenBirthTo.GetComponent<Consumer>().isFertile = false;
+            babyJustGivenBirthTo.GetComponent<ReproductionFemale>().isFertile = false;
+            babyJustGivenBirthTo.GetComponent<ReproductionFemale>().isPregnant = false;
         }
         isPregnant = false;
-        CooldownAfterGivingBirth();
+        isFertile = false;
+        isPregnant = false;
+        consumerScript.isFertile = false;
+        motherGenes = null;
+        fatherGenes = null;
+        pregnancyTimerCoolingDown = true;
+        StartCoroutine(CooldownAfterGivingBirth());
     }
 
     public IEnumerator CooldownAfterGivingBirth()
     {
         yield return new WaitForSeconds(pregnancyCooldownTimerMax);
         pregnancyTimerCoolingDown = false;
+        isFertile = true;
+        consumerScript.isFertile = true;
     }
 
     public void GeneAssigner(GameObject objectToAssignValuesTo, float[] genesToApply)
@@ -175,9 +187,9 @@ public class ReproductionFemale : MonoBehaviour
         consumerScript.interested = false;
         consumerScript.objectInterestedIn = null;
 
-        father.GetComponent<Consumer>().mateMovingTo = null;
-        father.GetComponent<Consumer>().movingToMate = false;
         father.GetComponent<Consumer>().interested = false;
+        father.GetComponent<Consumer>().movingToMate = false;
+        father.GetComponent<Consumer>().mateMovingTo = null;       
         father.GetComponent<Consumer>().objectInterestedIn = null;
     }
 }

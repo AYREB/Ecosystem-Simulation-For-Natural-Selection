@@ -937,18 +937,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animalsCanMutate: 0
   plantsCanMutate: 0
-  secondsPerYearInGame: 5
+  secondsPerYearInGame: 1
   range: 161
   initalPopulations:
   - name: Rabbit
     prefab: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-    startingCount: 0
+    startingCount: 10
   - name: Mushroom
     prefab: {fileID: 7658331334883041361, guid: 236d0589a2164aa49aaecaa4f57f7faa, type: 3}
-    startingCount: 0
+    startingCount: 20
   - name: Fox
     prefab: {fileID: 8957629482427661547, guid: 24264a117c483a8439c91725b0248174, type: 3}
-    startingCount: 0
+    startingCount: 4
   - name: Bear
     prefab: {fileID: 3266810157810920456, guid: 2b1ac95d929e3f24e89a83d6cf5a25f3, type: 3}
     startingCount: 0
@@ -8844,67 +8844,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1001 &1727087469
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 13.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_Name
-      value: Rabbit
-      objectReference: {fileID: 0}
-    - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
 --- !u!1 &1745700428
 GameObject:
   m_ObjectHideFlags: 0
@@ -9111,7 +9050,7 @@ Transform:
   m_GameObject: {fileID: 1747792962}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1.8332701, y: 1.8332701, z: 1.8332701}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1463877753}
@@ -9143,7 +9082,7 @@ Transform:
   m_GameObject: {fileID: 1778328364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.918, y: 2.918, z: 2.918}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 606473883}
@@ -11350,64 +11289,3 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1001 &2131076031
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2443930618097648787, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: ecosystemMainManager
-      value: 
-      objectReference: {fileID: 93559711}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488000106568018896, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8957629482427661547, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
-      propertyPath: m_Name
-      value: Rabbit (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b86f658b433f51546970cabb70d7f91e, type: 3}
