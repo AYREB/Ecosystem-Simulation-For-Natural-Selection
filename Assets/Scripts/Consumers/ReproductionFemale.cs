@@ -44,6 +44,7 @@ public class ReproductionFemale : MonoBehaviour
 
     public void BeginPregnancy(float[] motherGenes, float[] fatherGenes, GameObject father)
     {
+        Debug.Log("Begin Pregnancy");
         StartCoroutine(DisableMovementToMate(father));
         Debug.Log("Pregnancy Began");
         isPregnant = true;
@@ -58,6 +59,7 @@ public class ReproductionFemale : MonoBehaviour
 
     public void Birth(float[] motherGenes, float[] fatherGenes, GameObject father)
     {
+        Debug.Log("Birth");
         int howManyChildrenWillIGiveBirthTo = NumberOfChildrenToMake();
 
         for (int i = 0; i < howManyChildrenWillIGiveBirthTo; i++)
@@ -91,66 +93,48 @@ public class ReproductionFemale : MonoBehaviour
 
     public void GeneAssigner(GameObject objectToAssignValuesTo, float[] genesToApply)
     {
+        Debug.Log("Gene Assigner");
         Consumer babyConsumerScript = objectToAssignValuesTo.GetComponent<Consumer>();
         babyConsumerScript.speed = genesToApply[0];
-        babyConsumerScript.stamina = genesToApply[1];
-        babyConsumerScript.weight = genesToApply[2];
-        babyConsumerScript.lifespanYears = genesToApply[3];
-        babyConsumerScript.height = genesToApply[4];
-        babyConsumerScript.strength = genesToApply[5];
-        babyConsumerScript.width_length = genesToApply[6];
-        babyConsumerScript.visionRadius = genesToApply[7];
-        babyConsumerScript.gestationDuration = genesToApply[8];
-        babyConsumerScript.greed = genesToApply[9];
-        babyConsumerScript.foodCapacity = genesToApply[10];
-        babyConsumerScript.maxOffspring = genesToApply[11];
-        babyConsumerScript.antiReproductiveUrge = genesToApply[12];
-        babyConsumerScript.fightOrFlightStrength10Flight0Fight = genesToApply[13];
+        babyConsumerScript.visionRadius = genesToApply[1];
+        babyConsumerScript.gestationDuration = genesToApply[2];
+        babyConsumerScript.maxOffspring = genesToApply[3];
+        babyConsumerScript.antiReproductiveUrge = genesToApply[4];
+        babyConsumerScript.fightOrFlightStrength10Flight0Fight = genesToApply[5];
         babyConsumerScript.isMale = Random.Range(1, 3);
     }
 
     public float[] GeneListMaker(float[] motherGenes, float[] fatherGenes)
     {
-        Debug.Log("1");
-        float[] returnGenesList = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        Debug.Log("2");
+        Debug.Log("Gene list maker");
+        float[] returnGenesList = {0,0,0,0,0,0};
         for (int i = 0; i < motherGenes.Length; i++)
         {
-            Debug.Log("3");
             bool willMutate = mutationChance <= Random.Range(1, 101);
-            Debug.Log("4");
 
             if (willMutate == false)
             {
-                Debug.Log("5");
                 bool motherGenesPassed = Random.Range(0f, 100.0f) <= 50f; ;
-                Debug.Log("6");
                 if (motherGenesPassed == true)
                 {
-                    Debug.Log("6.5");
                     returnGenesList[i] = motherGenes[i];
-                    Debug.Log("7");
                 }
                 else
                 {
                     returnGenesList[i] = fatherGenes[i];
-                    Debug.Log("8");
                 }
             }
             else if (willMutate == true)
             {
                 bool motherGenesPassed = Random.Range(0f, 100.0f) <= 50f; ;
-                Debug.Log("9");
 
                 if (motherGenesPassed == true)
                 {
                     returnGenesList[i] = motherGenes[i] + Random.Range(-mutationAmount, mutationAmount);
-                    Debug.Log("10");
                 }
                 else
                 {
                     returnGenesList[i] = fatherGenes[i] + Random.Range(-mutationAmount, mutationAmount);
-                    Debug.Log("11");
                 }
             }
         }
@@ -181,6 +165,7 @@ public class ReproductionFemale : MonoBehaviour
 
     public IEnumerator DisableMovementToMate(GameObject father)
     {
+        Debug.Log("Disable Movement To mate");
         yield return new WaitForSeconds(3);
         consumerScript.mateMovingTo = null;
         consumerScript.movingToMate = false;

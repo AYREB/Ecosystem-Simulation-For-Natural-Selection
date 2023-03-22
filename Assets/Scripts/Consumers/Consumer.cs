@@ -29,25 +29,23 @@ public class Consumer : MonoBehaviour
     public Color colorOfFemale;
     public float pregnancyCooldownTimerMax;
     public GameObject objectToGiveBirthTo;
-
-    [Header("Properties (Non-Mutate)")]
-    public float speed;
-    public float stamina;
-    public float weight;
-    public float lifespanYears;
     public Color colourOfObject;
+    public float lifespanYears;
+    public float energyCapacity;
 
 
     [Header("Genes (Mutate)")]
     //1 = male, 2 = female
     public float isMale;
-    public float height;
-    public float strength;
-    public float width_length;
+    public float speed;
+    //public float stamina;
+    //public float weight;   
+    //public float height;
+    //public float strength;
+    //public float width_length;
     public float visionRadius;
     public float gestationDuration;
-    public float greed;
-    public float foodCapacity;  
+    //public float greed;
     public float maxOffspring;
     public float antiReproductiveUrgeDecreaseSpeed;
     public float fightOrFlightStrength10Flight0Fight;
@@ -59,7 +57,6 @@ public class Consumer : MonoBehaviour
     public float maxAntiReproductiveUrge;
     public float antiReproductiveUrge;
     //0 = low energy (needs food)
-    public float maxEnergyLevel;
     public float energyLevel;
 
 
@@ -102,7 +99,7 @@ public class Consumer : MonoBehaviour
         {
             colourOfObject = colorOfMale;
         }
-        energyLevel = maxEnergyLevel;
+        energyLevel = energyCapacity;
         antiReproductiveUrge = maxAntiReproductiveUrge;
         allSpeciesRequirement = GetComponent<AllSpeciesReuirement>();
         species = allSpeciesRequirement.species;
@@ -114,13 +111,13 @@ public class Consumer : MonoBehaviour
         navMeshAgent.speed = speed;
         positionMovingTo = ecosystemMainManager.getRandomPosition();
         GetComponent<Renderer>().material.color = colourOfObject;
-        myGenesListToPassToChildren = new float[] {speed, stamina, weight, lifespanYears, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
+        myGenesListToPassToChildren = new float[] {speed, visionRadius, gestationDuration, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
         loopholeRunning = false;
     }
 
     public void ApplierAtBirth()
     {
-        energyLevel = maxEnergyLevel;
+        energyLevel = energyCapacity;
         antiReproductiveUrge = maxAntiReproductiveUrge;
         allSpeciesRequirement = GetComponent<AllSpeciesReuirement>();
         species = allSpeciesRequirement.species;
@@ -132,7 +129,7 @@ public class Consumer : MonoBehaviour
         navMeshAgent.speed = speed;
         positionMovingTo = ecosystemMainManager.getRandomPosition();
         GetComponent<Renderer>().material.color = colourOfObject;
-        myGenesListToPassToChildren = new float[] { speed, stamina, weight, lifespanYears, height, strength, width_length, visionRadius, gestationDuration, greed, foodCapacity, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
+        myGenesListToPassToChildren = new float[] { speed, visionRadius, gestationDuration, maxOffspring, antiReproductiveUrgeDecreaseSpeed, fightOrFlightStrength10Flight0Fight };
     }
 
     // Update is called once per frame
@@ -181,17 +178,23 @@ public class Consumer : MonoBehaviour
 
     public bool ReproductionCheck()
     {
+        Debug.Log("Reproduction check");
         bool returnTrueIfCanReprodue = false;
         if (isMale == 1)
         {
+            Debug.Log("1.1");
             if (runningAway == false)
             {
+                Debug.Log("1.2");
                 if (mateMovingTo == null)
                 {
+                    Debug.Log("1.3");
                     if (antiReproductiveUrge < energyLevel)
                     {
+                        Debug.Log("1.4");
                         if (isFertile == true)
                         {
+                            Debug.Log("1.5");
                             returnTrueIfCanReprodue = true;
                         }
                     }
@@ -200,18 +203,25 @@ public class Consumer : MonoBehaviour
         }
         else if (isMale == 2)
         {
+            Debug.Log("2.1");
             if (runningAway == false)
             {
+                Debug.Log("2.2");
                 if (mateMovingTo == null)
                 {
+                    Debug.Log("2.3");
                     if (antiReproductiveUrge < energyLevel)
                     {
+                        Debug.Log("2.4");
                         if (isFertile == true)
                         {
+                            Debug.Log("2.5");
                             if (GetComponent<ReproductionFemale>().isPregnant == false)
                             {
+                                Debug.Log("2.6");
                                 if (GetComponent<ReproductionFemale>().pregnancyTimerCoolingDown == false)
                                 {
+                                    Debug.Log("2.7");
                                     returnTrueIfCanReprodue = true;
                                 }
                             }

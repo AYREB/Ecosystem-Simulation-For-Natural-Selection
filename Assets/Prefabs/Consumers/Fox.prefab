@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   species: 2
-  _diet: 0000000001000000
+  _diet: 01000000
   allSpeciesRequirement: {fileID: 0}
   ecosystemMainManager: {fileID: 0}
   navMeshAgent: {fileID: 0}
@@ -155,7 +155,7 @@ MonoBehaviour:
   gestationDuration: 5
   greed: 5
   foodCapacity: 5
-  maxOffspring: 5
+  maxOffspring: 2
   antiReproductiveUrgeDecreaseSpeed: 0
   fightOrFlightStrength10Flight0Fight: 10
   maxAntiReproductiveUrge: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   isFertile: 0
   energyLevelRequiredForPregnancy: 0
   myGenesListToPassToChildren: []
+  loopholeRunning: 0
 --- !u!114 &6115512626064068469
 MonoBehaviour:
   m_ObjectHideFlags: 0

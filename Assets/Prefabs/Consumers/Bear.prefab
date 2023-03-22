@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   species: 3
-  _diet: 0200000001000000
+  _diet: 02000000
   allSpeciesRequirement: {fileID: 0}
   ecosystemMainManager: {fileID: 0}
   navMeshAgent: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   stoppingDistance: 2.5
   colorOfMale: {r: 0.2924528, g: 0.11506807, b: 0.0041384757, a: 1}
   colorOfFemale: {r: 0.41509432, g: 0.27512434, b: 0.18992524, a: 0}
-  pregnancyCooldownTimerMax: 10
+  pregnancyCooldownTimerMax: 60
   objectToGiveBirthTo: {fileID: 3266810157810920456}
   speed: 5
   stamina: 5
@@ -155,7 +155,7 @@ MonoBehaviour:
   gestationDuration: 5
   greed: 5
   foodCapacity: 5
-  maxOffspring: 5
+  maxOffspring: 3
   antiReproductiveUrgeDecreaseSpeed: 0
   fightOrFlightStrength10Flight0Fight: 10
   maxAntiReproductiveUrge: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   isFertile: 0
   energyLevelRequiredForPregnancy: 0
   myGenesListToPassToChildren: []
+  loopholeRunning: 0
 --- !u!114 &-4492724261284746405
 MonoBehaviour:
   m_ObjectHideFlags: 0

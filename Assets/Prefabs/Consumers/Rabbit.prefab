@@ -142,25 +142,18 @@ MonoBehaviour:
   colorOfFemale: {r: 0, g: 1, b: 0.7647791, a: 0}
   pregnancyCooldownTimerMax: 10
   objectToGiveBirthTo: {fileID: 8957629482427661547}
-  speed: 5
-  stamina: 5
-  weight: 5
-  lifespanYears: 100
   colourOfObject: {r: 1, g: 0.9687811, b: 0, a: 0}
+  lifespanYears: 100
+  energyCapacity: 10
   isMale: 1
-  height: 5
-  strength: 5
-  width_length: 5
+  speed: 5
   visionRadius: 10
   gestationDuration: 5
-  greed: 5
-  foodCapacity: 5
-  maxOffspring: 5
+  maxOffspring: 4
   antiReproductiveUrgeDecreaseSpeed: 0
   fightOrFlightStrength10Flight0Fight: 10
   maxAntiReproductiveUrge: 0
   antiReproductiveUrge: 0
-  maxEnergyLevel: 100
   energyLevel: 0
   interested: 0
   anyPredatorInRange: 0
@@ -184,6 +177,7 @@ MonoBehaviour:
   isFertile: 0
   energyLevelRequiredForPregnancy: 0
   myGenesListToPassToChildren: []
+  loopholeRunning: 0
 --- !u!114 &2443930618097648787
 MonoBehaviour:
   m_ObjectHideFlags: 0
