@@ -27,12 +27,6 @@ public class EcosystemMainManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 
     public Vector3 getRandomPosition()
     {
