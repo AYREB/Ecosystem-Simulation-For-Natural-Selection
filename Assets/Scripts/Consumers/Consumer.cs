@@ -84,11 +84,12 @@ public class Consumer : MonoBehaviour
     public float energyLevelRequiredForPregnancy;
     public float[] myGenesListToPassToChildren;
     public bool loopholeRunning;
-
+    private NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         if (isMale == 2)
         {
             this.gameObject.AddComponent<ReproductionFemale>();
@@ -178,61 +179,24 @@ public class Consumer : MonoBehaviour
 
     public bool ReproductionCheck()
     {
-        Debug.Log("Reproduction check");
-        bool returnTrueIfCanReprodue = false;
+        if (runningAway || mateMovingTo != null || antiReproductiveUrge >= energyLevel || !isFertile)
+        {
+            return false;
+        }
+
         if (isMale == 1)
         {
-            Debug.Log("1.1");
-            if (runningAway == false)
-            {
-                Debug.Log("1.2");
-                if (mateMovingTo == null)
-                {
-                    Debug.Log("1.3");
-                    if (antiReproductiveUrge < energyLevel)
-                    {
-                        Debug.Log("1.4");
-                        if (isFertile == true)
-                        {
-                            Debug.Log("1.5");
-                            returnTrueIfCanReprodue = true;
-                        }
-                    }
-                }
-            }
+            return true;
         }
         else if (isMale == 2)
         {
-            Debug.Log("2.1");
-            if (runningAway == false)
-            {
-                Debug.Log("2.2");
-                if (mateMovingTo == null)
-                {
-                    Debug.Log("2.3");
-                    if (antiReproductiveUrge < energyLevel)
-                    {
-                        Debug.Log("2.4");
-                        if (isFertile == true)
-                        {
-                            Debug.Log("2.5");
-                            if (GetComponent<ReproductionFemale>().isPregnant == false)
-                            {
-                                Debug.Log("2.6");
-                                if (GetComponent<ReproductionFemale>().pregnancyTimerCoolingDown == false)
-                                {
-                                    Debug.Log("2.7");
-                                    returnTrueIfCanReprodue = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            var reproductionScript = GetComponent<ReproductionFemale>();
+            return !reproductionScript.isPregnant && !reproductionScript.pregnancyTimerCoolingDown;
         }
 
-        return returnTrueIfCanReprodue;
+        return false;
     }
+
 
     public GameObject closestPotentialMateInAList(List<GameObject> listOfObjects)
     {
@@ -317,12 +281,19 @@ public class Consumer : MonoBehaviour
         }
     }
 
-    public void NavMeshMoveTo(Vector3 desitnation)
+    public void NavMeshMoveTo(Vector3 targetPosition)
     {
-        navMeshAgent.SetDestination(desitnation);
+        if (agent.isOnNavMesh)
+        {
+            agent.SetDestination(targetPosition);
+        }
+        else
+        {
+            Debug.LogWarning("NavMeshAgent is not on the NavMesh. Destination cannot be set.");
+        }
     }
 
-    private void GotInRangeOfObjectOrPositionInterestedIn(GameObject objectItWasInterestedIn)
+private void GotInRangeOfObjectOrPositionInterestedIn(GameObject objectItWasInterestedIn)
     {
         //Eat Prey
         if (movingToMate != true)
@@ -402,112 +373,76 @@ public class Consumer : MonoBehaviour
 
     public void ClosestPredatorAndPrey()
     {
-        closestPredator = null;
-        closestPrey = null;
-        anyPredatorInRange = AnyPredatorsInRange();
-        anyPrey_producerInRange = AnyPreyInRange();
-        //Get info on nearest predator
-        if (allPredatorsInRange.Count > 1)
-        {            
-            closestPredator = closestGameobjectInAList(allPredatorsInRange);
-            distanceToNearestPred = Vector3.Distance(closestPredator.transform.position, this.transform.position);
-            interested = true;
-        }
-        else if (allPredatorsInRange.Count == 1)
-        {            
-            closestPredator = allPredatorsInRange[0];
-            distanceToNearestPred = Vector3.Distance(closestPredator.transform.position, this.transform.position);
-            interested = true;
-        }
-        else if (allPredatorsInRange.Count == 0)
+        closestPredator = FindClosestObject(allPredatorsInRange);
+        closestPrey = FindClosestObject(allPreyInRange);
+        anyPredatorInRange = closestPredator != null;
+        anyPrey_producerInRange = closestPrey != null;
+    }
+
+    private GameObject FindClosestObject(List<GameObject> objects)
+    {
+        GameObject closestObject = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (GameObject obj in objects)
         {
-            closestPredator = null;
+            float distance = Vector3.Distance(obj.transform.position, transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestObject = obj;
+            }
         }
 
-        //Get info on nearest prey
-        if (allPreyInRange.Count > 1)
-        {           
-            closestPrey = closestGameobjectInAList(allPreyInRange);
-            distanceToNearestPrey_Consumable = Vector3.Distance(closestPrey.transform.position, this.transform.position);
-            interested = true;
-        }
-        else if (allPreyInRange.Count == 1)
-        {           
-            closestPrey = allPreyInRange[0];
-            distanceToNearestPrey_Consumable = Vector3.Distance(closestPrey.transform.position, this.transform.position);
-            interested = true;
-        }
-        else if (allPreyInRange.Count == 0)
-        {
-            closestPrey = null;
-        }
+        return closestObject;
     }
 
     public void Interest()
     {
-        //What is it interested in
-        if (anyPredatorInRange == true || movingToMate == false)
+        if (anyPredatorInRange || !movingToMate)
         {
-            if (anyPrey_producerInRange == true && anyPredatorInRange == true)
+            if (anyPrey_producerInRange)
             {
                 interested = true;
-
-                if (distanceToNearestPred < distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+                if (anyPredatorInRange && distanceToNearestPred < distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
                 {
                     objectInterestedIn = closestPredator;
                     runningAway = true;
                     getRunawayPosition(closestPredator.transform.position);
                 }
-                else if (distanceToNearestPred > distanceToNearestPrey_Consumable * fightOrFlightStrength10Flight0Fight)
+                else
                 {
-                    runningAway = false;
                     objectInterestedIn = closestPrey;
                     positionMovingTo = closestPrey.transform.position;
+                    runningAway = false;
                 }
             }
-            //only prey in range
-            else if (anyPrey_producerInRange == true && anyPredatorInRange == false)
-            {
-                runningAway = false;
-                anyPredatorInRange = false;
-                closestPredator = null;
-
-                interested = true;
-                objectInterestedIn = closestPrey;
-                positionMovingTo = closestPrey.transform.position;
-            }
-            //only pred in range
-            else if (anyPrey_producerInRange == false && anyPredatorInRange == true)
+            else if (anyPredatorInRange)
             {
                 runningAway = true;
-                anyPrey_producerInRange = false;
-                closestPrey = null;
-
-                interested = true;
                 objectInterestedIn = closestPredator;
                 getRunawayPosition(closestPredator.transform.position);
             }
-            //no pred or prey in range
-            if (anyPrey_producerInRange == false && anyPredatorInRange == false)
+            else
             {
-                runningAway = false;
-                objectInterestedIn = null;
-                interested = false;
-
-                anyPredatorInRange = false;
-                closestPredator = null;
-
-                anyPrey_producerInRange = false;
-                closestPrey = null;
+                ResetInterest();
             }
         }
-        else if (anyPredatorInRange == false && movingToMate == true)
+        else if (movingToMate)
         {
             interested = true;
             objectInterestedIn = mateMovingTo;
             positionMovingTo = mateMovingTo.transform.position;
         }
     }
+
+    private void ResetInterest()
+    {
+        runningAway = false;
+        objectInterestedIn = null;
+        interested = false;
+    }
+
     public GameObject closestGameobjectInAList(List<GameObject> listOfObjects)
     {
         float closestDistance = 999999999.0f;
